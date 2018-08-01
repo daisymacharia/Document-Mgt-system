@@ -1,7 +1,15 @@
 import express from "express";
-import { test } from "./veiws/users";
+import User from "./veiws/users";
 
-export const router = express.Router();
+import { verifyToken } from "./helpers/verify_token";
 
-// a simple test url to check that all of our files are communicating correctly.
-export const testRoute = router.get("/test", test);
+const user = new User();
+const router = express.Router();
+
+router.post("/users/", user.createUser);
+router.post("/users/login", user.loginUser);
+router.get("/users/", verifyToken, user.getUsers);
+router.get("/users/:id", verifyToken, user.getUsers);
+router.patch("/users/:id", verifyToken, user.updateUser);
+
+export default router;
