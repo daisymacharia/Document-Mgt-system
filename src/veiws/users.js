@@ -70,7 +70,8 @@ class User {
 				user
 					.save()
 					.then(item => {
-						var token = generate_token(username, user.role, item._id);
+						var token = generate_token(username, item._id, user.role);
+
 						res.status(200).send({
 							message: `Account for ${username} created`,
 							token: token
@@ -122,17 +123,36 @@ class User {
 	}
 
 	updateUser(req, res) {
+		const user = new UserSchema();
 		let id = req.params.id;
-		if (req.user_id == id) {
-			UserSchema.findByIdAndUpdate(id, req.body).exec(
-				(error, existing_user) => {
-					if (error) res.status(400).send({ message: "An error occured" });
-					else if (!existing_user) {
-						res.status(404).send({ message: "user not found" });
-					} else res.status(200).send({ message: "user data updated " });
+		const { role } = req.body;
+
+		UserSchema.findById(id).exec((error, user) => {
+			if (user) {
+				if (req.user_id == id) {
+					if (role) {
+						return res
+							.status(403)
+							.send({ message: "User not allowed to modify a role" });
+					} else {
+						UserSchema.findByIdAndUpdate(id, req.body).exec((error, user) => {
+							if (error) res.status(400).send({ message: "An error occured" });
+							else if (!error)
+								res.status(200).send({ message: "user data updated" });
+						});
+					}
+				} else if (req.role == "admin") {
+					UserSchema.findByIdAndUpdate(id, req.body).exec((error, user) => {
+						if (error) res.status(400).send({ message: "An error occured" });
+						else if (user)
+							res.status(200).send({ message: "user upgraded to admin" });
+					});
+				} else {
+					return res.status(403).send({ message: "not authorised" });
 				}
-			);
-		} else res.status(403).send({ message: "User not authorised" });
+			} else if (error) res.status(400).send({ message: "An error occured" });
+			else res.status(404).send({ message: "user not found" });
+		});
 	}
 }
 
