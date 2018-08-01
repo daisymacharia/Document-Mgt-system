@@ -6,15 +6,12 @@ import config from "./webpack.config";
 import webpackDevServer from "webpack-dev-server";
 
 const compiler = webpack(config);
-const app = express(); // make instance of express
+const app = express();
 const options = {
 	contentBase: "./dist",
 	hot: true,
 	host: "localhost"
 };
-
-// webpackDevServer.addDevServerEntrypoints(config, options);
-// const server = new webpackDevServer(compiler, options);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

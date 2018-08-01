@@ -1,5 +1,6 @@
 import express from "express";
-import User from "./veiws/users";
+import User from "./veiws/user";
+import Document from "./veiws/document";
 
 import { verifyToken } from "./helpers/verify_token";
 
