@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import { testRoute, routes } from "./src";
+import router from "./src";
 import webpack from "webpack";
 import config from "./webpack.config";
 import webpackDevServer from "webpack-dev-server";
@@ -13,15 +13,14 @@ const options = {
 	host: "localhost"
 };
 
-webpackDevServer.addDevServerEntrypoints(config, options);
-const server = new webpackDevServer(compiler, options);
+// webpackDevServer.addDevServerEntrypoints(config, options);
+// const server = new webpackDevServer(compiler, options);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Register the routes
-app.use(testRoute);
-// app.use("/api", routes);
+app.use(`/api/v1/`, router);
 
 let port = process.env.PORT || 3000; // set our port
 
