@@ -71,7 +71,6 @@ class User {
 					.save()
 					.then(item => {
 						var token = generate_token(username, item._id, user.role);
-
 						res.status(200).send({
 							message: `Account for ${username} created`,
 							token: token
