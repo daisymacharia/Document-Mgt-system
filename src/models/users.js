@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
-import { db } from "../config/config";
 
-let conn = db;
 let Schema = mongoose.Schema;
 
 const User = new Schema({

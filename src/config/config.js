@@ -8,6 +8,7 @@ export const db = mongoose.connect(
 	url,
 	{ useNewUrlParser: true },
 	(err, db) => {
+		console.log("database created");
 		if (err) throw err;
 	}
 );

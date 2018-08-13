@@ -64,14 +64,7 @@ class User {
 		} = req.body;
 
 		UserSchema.findOne({
-			$or: [
-				{
-					username
-				},
-				{
-					email
-				}
-			]
+			$or: [{ username }, { email }]
 		}).exec((err, existing_user) => {
 			if (err)
 				res.status(400).send({

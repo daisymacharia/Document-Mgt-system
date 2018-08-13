@@ -1,16 +1,17 @@
 import mongoose from "mongoose";
-import { db } from "../config/config";
 
-let conn = db;
 let Schema = mongoose.Schema;
 
 const Doc = new Schema({
-	ownerId: { type: Int, max: 100 },
+	ownerId: {
+		type: String,
+		max: 100
+	},
 	title: {
 		type: String,
 		validate: {
 			validator: v => {
-				return /^[a-z0-9]+$/i.test(v);
+				return /^[a-z0-9_ ]+$/i.test(v);
 			},
 			message: '"{VALUE}" is not a valid title!'
 		},
@@ -22,15 +23,15 @@ const Doc = new Schema({
 		type: String,
 		validate: {
 			validator: v => {
-				return /^[a-z0-9]+$/i.test(v);
+				return /^[a-z0-9_ ]+$/i.test(v);
 			},
 			message: '"{VALUE}" is not valid content!'
 		},
 		required: [true, "Content is required"],
 		min: 3
 	},
-	createdAt: { type: Date },
-	modifiedAt: { type: Date }
+	createdAt: { type: Date, default: Date() },
+	modifiedAt: { type: Date, default: Date() }
 });
 
 const DocSchema = mongoose.model("Doc", Doc);
