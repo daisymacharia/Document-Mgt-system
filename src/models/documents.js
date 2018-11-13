@@ -3,6 +3,10 @@ import mongoose from "mongoose";
 let Schema = mongoose.Schema;
 
 const Doc = new Schema({
+	access: {
+		type: String,
+		default: "public"
+	},
 	ownerId: {
 		type: String,
 		max: 100
